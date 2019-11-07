@@ -1,0 +1,34 @@
+package main
+
+import(
+	"fmt"
+	"runtime"
+	"time"
+	//"math/rand"
+)
+
+func main(){
+	c := make(chan string)
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	
+	start := time.Now()
+	for i:=1; i<=1000; i++ {
+		go func(num int){   //AQUI CRIA-SE UMA FUNÇÃO UTILIZANDO N COMO PARAMETRO
+			c <- fmt.Sprintln("Executando groutines", num) //sPRINTLN serve para imprimir variáveis em String
+		}(i) //AQUI O VALOR DE i SERÁ ASSOCIADO COM A VARIÁVEL n DA FUNÇÃO GO (que será executada em um processador, cada goroutine executa em um nucleo do processador)
+	}
+	
+	//Espera terminar
+	for i := 1; i <= 1000; i++ {
+		fmt.Print(<- c) //aqui apenas descarregamos tudo o q carregamos nos canais
+	}
+	
+	fmt.Println(time.Since(start))
+}
+
+//a falta de sincronização ocorre pelo problema nao ser de natureza paralela
+
+
+
+
+//a func main, por si só, já uma goroutine, característico desta linguagem

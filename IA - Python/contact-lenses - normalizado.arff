@@ -1,0 +1,35 @@
+@relation contact-lenses-weka.filters.supervised.attribute.NominalToBinary
+
+@attribute age=young numeric
+@attribute age=pre-presbyopic numeric
+@attribute age=presbyopic numeric
+@attribute spectacle-prescrip=hypermetrope numeric
+@attribute astigmatism=yes numeric
+@attribute tear-prod-rate=normal numeric
+@attribute contact-lenses {soft,hard,none}
+
+@data
+1,0,0,0,0,0,none
+1,0,0,0,0,1,soft
+1,0,0,0,1,0,none
+1,0,0,0,1,1,hard
+1,0,0,1,0,0,none
+1,0,0,1,0,1,soft
+1,0,0,1,1,0,none
+1,0,0,1,1,1,hard
+0,1,0,0,0,0,none
+0,1,0,0,0,1,soft
+0,1,0,0,1,0,none
+0,1,0,0,1,1,hard
+0,1,0,1,0,0,none
+0,1,0,1,0,1,soft
+0,1,0,1,1,0,none
+0,1,0,1,1,1,none
+0,0,1,0,0,0,none
+0,0,1,0,0,1,none
+0,0,1,0,1,0,none
+0,0,1,0,1,1,hard
+0,0,1,1,0,0,none
+0,0,1,1,0,1,soft
+0,0,1,1,1,0,none
+0,0,1,1,1,1,none

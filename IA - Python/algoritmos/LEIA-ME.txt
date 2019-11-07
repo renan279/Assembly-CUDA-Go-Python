@@ -1,0 +1,12 @@
+
+para executar, abra cmd, naVegue ate pasta onde esta o codigo
+
+escreva no terminar: "python [arquivo]"
+            exemplo: "python estrela.py"
+
+arquivos: gulosa.py
+	  climbing.py
+	  estrela.py
+
+climbing.py: "python climbing.py --numrun=10 --quiet"
+	     "python climbing.py --numrun=10"

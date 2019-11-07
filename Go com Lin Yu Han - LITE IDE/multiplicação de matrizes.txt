@@ -1,0 +1,66 @@
+package main
+
+import (
+	"fmt" //output
+	"time" //para definir o tempo de execução do programa
+	"runtime" //utilização dos nucleos da CPU
+	"math/rand" //pacote de números randomicos
+)
+
+var linha = 100
+var coluna = 100
+
+func main() {
+	rand.Seed(time.Now().UnixNano())
+	
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	
+	matriz1 := make([][]float64, linha) // iniciando matriz de tamanho [100][0]
+	for i:=0; i< linha; i++{
+		matriz1[i] = make([]float64, coluna) // crio coluna para as linhas... [100][0]~[100][100]
+	}													//criada matriz 1
+	
+	matriz2 := make([][]float64, linha)
+	for i:=0; i< linha; i++{
+		matriz2[i] = make([]float64, coluna) 			// 2
+	}
+	
+	matriz3 := make([][]float64, linha)
+	for i:=0; i< linha; i++{
+		matriz3[i] = make([]float64, coluna) 			// e 3 = resultante
+	}
+	
+	
+	for i:=0; i< linha; i++{ // gera os números randomicos das matrizes 1 e 2
+		for j := 0; j<coluna; j++ {
+			matriz1[i][j] = rand.Float64()
+			matriz2[i][j] = rand.Float64()
+		}
+	}
+	
+	
+	canal := make(chan bool)
+	start := time.Now()
+	
+	for i:=0; i< linha; i++{ // multiplica as matrizes
+		go func(l int){ //declarando goroutines = numero de linhas
+			for j:=0; j<coluna; j++ {
+				for k:=0; k<100; k++ {
+					matriz3[l][j] = matriz3[i][j]+(matriz1[l][k] * matriz2[l][j])
+				} 
+			}
+			canal <- true //sinalizo que a goroutine terminou a tarefa
+		}(i) //variável controlado pelo laço for de linhas
+	}
+	
+	<-canal //sinalizo para as outras goroutines que terminou a tarefa
+	
+	fmt.Println(time.Since(start))
+	
+	for i:=0; i< linha; i++{ 
+		for j := 0; j<coluna; j++ {
+			fmt.Printf("%f", matriz3[i][j])
+		}
+		fmt.Print(" ")
+	}
+}

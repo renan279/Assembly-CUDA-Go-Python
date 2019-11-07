@@ -1,0 +1,40 @@
+package main
+
+import (
+	"fmt"
+)
+
+
+}
+
+func main() {
+	go fmt.Println("Hello de uma groutine") //aqui ele chama uma thread
+	fmt.Println("Hello da goroutine principal") //aqui ele printa, e termina o código sem printar a threat chamada anteriormente
+	
+}
+
+
+=================================================
+
+
+package main
+
+import (
+	"fmt"
+)
+
+var c = make(chan int)
+
+func f(){
+	fmt.Println("Hello de uma goroutine")
+	c <- 0 //aqui carrega o channel
+}
+
+func main() {
+	go f()
+	fmt.Println("Hello da goroutine principal") //aqui ele printa, e termina o código sem printar a threat chamada anteriormente
+	<- c //aqui ele descarrega, executando tudo o q tiver que fazer
+}
+
+================================================
+

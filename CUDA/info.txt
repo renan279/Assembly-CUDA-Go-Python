@@ -1,0 +1,10 @@
+ordenação paralela - BitonicSort
+
+nilyuhan@gmail.com
+
+
+grieWank
+algoritmo genético
+slide dos blocos
+algoritmo de fibonacci
+teste dos pontos (em gráfico)

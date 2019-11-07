@@ -1,0 +1,71 @@
+UDACITY - INTRODUCTION TO PARALEL PROGRAMING
+
+PLACA NVIDIA - vISUAL STUDIO - ECLIPSE - TOOLKIT CUDA
+
+
+
+
+
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+#include <stdio.h>
+
+
+const int arraySize = 500;
+
+
+__global__ void somaVetorKernel(int *a, int *b, int *c){ //função kernel, responsável pelo processo principal do programa e das threads
+	int i = threadIdx.x;
+	c[i] = a[i] + b[i];
+
+	__syncthreads(); //sincroniza threads de função kernel
+}
+
+
+void somaVetor(int *a, int *b, int *c){
+	int *dev_a = 0;
+	int *dev_b = 0;
+	int *dev_c = 0;
+
+	//alocando memória na GPU - 3 vetores
+	  // 2 vetores de entrada e 1 de saída
+	cudaMalloc((void**)&dev_a, arraySize * sizeof(int));
+	cudaMalloc((void**)&dev_b, arraySize * sizeof(int));
+	cudaMalloc((void**)&dev_c, arraySize * sizeof(int));
+	
+	//copiando os dois vetores de entrada para a GPU
+	  //host = cpu    device = gpu
+	cudaMemcpy(dev_a, a, arraySize * sizeof(int), cudaMemcpyHostToDevice);
+	cudaMemcpy(dev_b, b, arraySize * sizeof(int), cudaMemcpyHostToDevice);
+
+	//start da função kernel
+	somaVetorKernel<<<1, arraySize>>>(dev_a, dev_b, dev_c); //<<<1 (numero de blocos), arraySize(numero de threads)>>>
+	
+	//sincronizando a GPU
+	cudaDeviceSynchronize();
+
+	//copiando o vetor resultado para o host (CPU)
+	cudaMemcpy(c, dev_c, arraySize * sizeof(int), cudaMemcpyDeviceToHost);
+}
+
+
+
+
+
+int main () {
+		int a[arraySize];
+		int b[arraySize];
+		int c[arraySize];
+		
+		for (int i=0; i<arraySize; i++){
+			a[i] = i;
+			b[i] = i;
+		}	
+
+		somaVetor(a, b, c);
+
+		for(int i=0; i<arraySize; i++){
+			printf("%d, ", c[i]);
+		}
+		system("PAUSE");
+}
